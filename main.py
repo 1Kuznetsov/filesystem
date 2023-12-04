@@ -9,8 +9,8 @@ def acceptCommand():
             return int(cmnd)
         else:
             print(ru.NOT_CHOICE)
-command = acceptCommand()
-print(command)
+# command = acceptCommand()
+# print(command)
 
 
 def moveUp():
@@ -21,34 +21,44 @@ def moveUp():
 
 
 def moveDown(currentDir):
-    subdirectory_name = input(ru.CATALOG_NAME)
-    if not subdirectory_name or not os.path.isdir(currentDir) or os.path.exists(currentDir):
-        print(ru.TRY_AGAIN)
+    catalog_name = input(ru.CATALOG_NAME)
+
+    if not catalog_name:
+        print(ru.NOT_INDICATED)
         return
-    if not os.path.exists(os.path.join(currentDir, subdirectory_name)) or not os.path.isdir(os.path.join(currentDir, subdirectory_name)):
-        print(ru.NOT_FIND)
+
+    check_path = os.path.join(currentDir, catalog_name)
+
+    if not os.path.isdir(currentDir):
+        print(ru.PATH_NOT_DIRECT_1, currentDir, ru.PATH_NOT_DIRECT_2)
         return
-    else:
-        os.chdir(os.path.join(currentDir, subdirectory_name))
-        print(ru.NEW_NAME, os.getcwd())
+
+    if not os.path.exists(check_path) or not os.path.isdir(check_path):
+        print(ru.SUBDIR_NOT_FOUND_1, catalog_name, ru.SUBDIR_NOT_FOUND_2, currentDir)
+        return
+
+    os.chdir(check_path)
+    print(ru.NEW_NAME, os.getcwd())
+
 
 
 def findFiles(directory, target):
-    file_directory = []
+    found_files = []
+    if not os.path.exists(directory):
+        print(f"Путь '{directory}' не существует")
+        return found_files
 
-    if os.path.isfile(directory) and target in os.path.basename(directory):
-        file_directory.append(directory)
+    files_and_dirs = os.listdir(directory)
 
-    if os.path.isdir(directory):
-        for root, dirs, files in os.walk(directory):
-            for file in files:
-                if target in file:
-                    file_directory.append(os.path.join(root, file))
+    for item in files_and_dirs:
+        item_path = os.path.join(directory, item)
 
-    if len(file_directory) == 0:
-        print(ru.NOT_FIND)
-    else:
-        return file_directory
+        if os.path.isfile(item_path):
+            if target in item:
+                found_files.append(item_path)
+        else:
+            found_files.extend(findFiles(item_path, target))
+    return found_files
 
 
 def run_command(command):
@@ -57,7 +67,7 @@ def run_command(command):
     if command == 2:
         moveUp()
     if command == 3:
-        direct = input()
+        direct = os.getcwd()
         moveDown(direct)
     if command == 4:
         route = input()
@@ -115,3 +125,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # print(findFiles('/Users/mariaadreeva/PycharmProjects', 'krivoshapova'))
