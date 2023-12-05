@@ -1,3 +1,4 @@
+# Kuznetsov Igor - 100,
 import os
 import ru_local as ru
 
@@ -9,8 +10,6 @@ def acceptCommand():
             return int(cmnd)
         else:
             print(ru.NOT_CHOICE)
-# command = acceptCommand()
-# print(command)
 
 
 def moveUp():
@@ -41,7 +40,6 @@ def moveDown(currentDir):
     print(ru.NEW_NAME, os.getcwd())
 
 
-
 def findFiles(directory, target):
     found_files = []
     if not os.path.exists(directory):
@@ -61,26 +59,6 @@ def findFiles(directory, target):
     return found_files
 
 
-def run_command(command):
-    if command == 1:
-        print(*os.listdir())
-    if command == 2:
-        moveUp()
-    if command == 3:
-        direct = os.getcwd()
-        moveDown(direct)
-    if command == 4:
-        route = input()
-        count_files(route)
-    if command == 5:
-        route = input()
-        count_bytes(route)
-    if command == 6:
-        route = input()
-        aim = input()
-        findFiles(aim, route)
-
-
 def count_files(path):
     cnt = 0
 
@@ -93,7 +71,9 @@ def count_files(path):
                 cnt += count_files(new_path)
         return cnt
     except PermissionError:
-        print(None)
+        return -1
+    except FileNotFoundError:
+        return -2
 
 
 def count_bytes(path):
@@ -108,7 +88,58 @@ def count_bytes(path):
                 byte += count_bytes(new_path)
         return byte
     except PermissionError:
-        print(None)
+        return -1
+    except FileNotFoundError:
+        return -2
+
+
+def run_command(command):
+    if command == 1:
+        data = os.listdir()
+        for item in data:
+            print(item)
+
+    if command == 2:
+        moveUp()
+
+    if command == 3:
+        moveDown(os.getcwd())
+
+    if command == 4:
+        catalog = input(ru.CATALOG_NAME)
+
+        if catalog == '':
+            res = count_files(os.getcwd())
+        else:
+            res = count_files(catalog)
+
+        if res == -1:
+            print('PermissionError')
+        elif res == -2:
+            print('FileNotFoundError')
+        else:
+            print(ru.COUNT, res)
+
+    if command == 5:
+        catalog = input(ru.CATALOG_NAME)
+
+        if catalog == '':
+            res = count_files(os.getcwd())
+        else:
+            res = count_files(catalog)
+
+        if res == -1:
+            print('PermissionError')
+        elif res == -2:
+            print('FileNotFoundError')
+        else:
+            print(ru.BITES, res)
+
+    if command == 6:
+        aim = input(ru.FILE_NAME)
+        print(findFiles(os.getcwd(), aim))
+    if command == 7:
+        return None
 
 
 def main():
@@ -118,6 +149,7 @@ def main():
         print(ru.MENU)
         command = acceptCommand()
         run_command(command)
+        print()
         if command == QUIT:
             print('Работа программы завершена.')
             break
@@ -125,4 +157,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # print(findFiles('/Users/mariaadreeva/PycharmProjects', 'krivoshapova'))
