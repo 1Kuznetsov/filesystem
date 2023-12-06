@@ -4,15 +4,23 @@ import ru_local as ru
 
 
 def acceptCommand():
+    '''
+    Requests the command number and, if the command number is specified incorrectly,
+    displays an error message. Commands are requested until the correct command number
+    is entered. Returns the correct command number.
+    '''
     while True:
-        cmnd = int(input(ru.CHOICE))
-        if cmnd > 0 and cmnd < 8:
-            return int(cmnd)
+        cmd = int(input(ru.CHOICE))
+        if cmd > 0 and cmd < 8:
+            return int(cmd)
         else:
             print(ru.NOT_CHOICE)
 
 
 def moveUp():
+    '''
+    Makes the current parent directory.
+    '''
     current_directory = os.getcwd()
     parent_directory = os.path.dirname(current_directory)
     os.chdir(parent_directory)
@@ -20,6 +28,10 @@ def moveUp():
 
 
 def moveDown(currentDir):
+    '''
+    Prompts for the name of a subdirectory. If the name is specified correctly, it makes
+    the directory located in currentDir current, otherwise it displays an error message.
+    '''
     catalog_name = input(ru.CATALOG_NAME)
 
     if not catalog_name:
@@ -41,6 +53,11 @@ def moveDown(currentDir):
 
 
 def findFiles(directory, target):
+    '''
+    A recursive function that generates a list of paths to files whose names
+    contain target. The search includes all subdirectories of the path directory.
+    If the files are not found, displays a corresponding message.
+    '''
     found_files = []
     if not os.path.exists(directory):
         print(f"Путь '{directory}' не существует")
