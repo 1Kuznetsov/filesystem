@@ -77,6 +77,10 @@ def findFiles(directory, target):
 
 
 def count_files(path):
+    """
+    A recursive function that counts the number of files in the specified directory path.
+    The count includes all files located in subdirectories. Returns the number of files.
+    """
     cnt = 0
 
     try:
@@ -94,6 +98,11 @@ def count_files(path):
 
 
 def count_bytes(path):
+    """
+    A recursive function that calculates the total size (in bytes) of all files in the
+    specified directory path. The count includes all files located in subdirectories.
+    Returns the total number of bytes.
+    """
     byte = 0
 
     try:
@@ -111,6 +120,9 @@ def count_bytes(path):
 
 
 def run_command(command):
+    """
+    Determines by the command number which function should be executed.
+    """
     if command == 1:
         data = os.listdir()
         for item in data:
