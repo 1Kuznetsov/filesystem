@@ -3,12 +3,12 @@ import os
 import ru_local as ru
 
 
-def acceptCommand():
-    '''
+def accept_command():
+    """
     Requests the command number and, if the command number is specified incorrectly,
     displays an error message. Commands are requested until the correct command number
     is entered. Returns the correct command number.
-    '''
+    """
     while True:
         cmd = int(input(ru.CHOICE))
         if cmd > 0 and cmd < 8:
@@ -17,21 +17,21 @@ def acceptCommand():
             print(ru.NOT_CHOICE)
 
 
-def moveUp():
-    '''
+def move_up():
+    """
     Makes the current parent directory.
-    '''
+    """
     current_directory = os.getcwd()
     parent_directory = os.path.dirname(current_directory)
     os.chdir(parent_directory)
     print(ru.CURRENT_DIRECTORY, os.getcwd())
 
 
-def moveDown(currentDir):
-    '''
+def move_down(currentDir):
+    """
     Prompts for the name of a subdirectory. If the name is specified correctly, it makes
     the directory located in currentDir current, otherwise it displays an error message.
-    '''
+    """
     catalog_name = input(ru.CATALOG_NAME)
 
     if not catalog_name:
@@ -52,12 +52,12 @@ def moveDown(currentDir):
     print(ru.NEW_NAME, os.getcwd())
 
 
-def findFiles(directory, target):
-    '''
+def find_files(directory, target):
+    """
     A recursive function that generates a list of paths to files whose names
     contain target. The search includes all subdirectories of the path directory.
     If the files are not found, displays a corresponding message.
-    '''
+    """
     found_files = []
     if not os.path.exists(directory):
         print(f"Путь '{directory}' не существует")
@@ -72,7 +72,7 @@ def findFiles(directory, target):
             if target in item:
                 found_files.append(item_path)
         else:
-            found_files.extend(findFiles(item_path, target))
+            found_files.extend(find_files(item_path, target))
     return found_files
 
 
@@ -129,10 +129,10 @@ def run_command(command):
             print(item)
 
     if command == 2:
-        moveUp()
+        move_up()
 
     if command == 3:
-        moveDown(os.getcwd())
+        move_down(os.getcwd())
 
     if command == 4:
         catalog = input(ru.CATALOG_NAME)
@@ -166,7 +166,7 @@ def run_command(command):
 
     if command == 6:
         aim = input(ru.FILE_NAME)
-        print(findFiles(os.getcwd(), aim))
+        print(find_files(os.getcwd(), aim))
     if command == 7:
         return None
 
@@ -176,7 +176,7 @@ def main():
         QUIT = 7
         print(os.getcwd())
         print(ru.MENU)
-        command = acceptCommand()
+        command = accept_command()
         run_command(command)
         print()
         if command == QUIT:
