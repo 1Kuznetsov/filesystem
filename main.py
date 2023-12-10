@@ -10,9 +10,9 @@ def accept_command():
     is entered. Returns the correct command number.
     """
     while True:
-        cmd = int(input(ru.CHOICE))
-        if cmd > 0 and cmd < 8:
-            return int(cmd)
+        command = int(input(ru.CHOICE))
+        if 0 < command < 8:
+            return int(command)
         else:
             print(ru.NOT_CHOICE)
 
@@ -27,7 +27,7 @@ def move_up():
     print(ru.CURRENT_DIRECTORY, os.getcwd())
 
 
-def move_down(currentDir):
+def move_down(current_dir):
     """
     Prompts for the name of a subdirectory. If the name is specified correctly, it makes
     the directory located in currentDir current, otherwise it displays an error message.
@@ -38,14 +38,14 @@ def move_down(currentDir):
         print(ru.NOT_INDICATED)
         return
 
-    check_path = os.path.join(currentDir, catalog_name)
+    check_path = os.path.join(current_dir, catalog_name)
 
-    if not os.path.isdir(currentDir):
-        print(ru.PATH_NOT_DIRECT_1, currentDir, ru.PATH_NOT_DIRECT_2)
+    if not os.path.isdir(current_dir):
+        print(ru.PATH_NOT_DIRECT_1, current_dir, ru.PATH_NOT_DIRECT_2)
         return
 
     if not os.path.exists(check_path) or not os.path.isdir(check_path):
-        print(ru.SUBDIR_NOT_FOUND_1, catalog_name, ru.SUBDIR_NOT_FOUND_2, currentDir)
+        print(ru.SUBDIR_NOT_FOUND_1, catalog_name, ru.SUBDIR_NOT_FOUND_2, current_dir)
         return
 
     os.chdir(check_path)
@@ -60,9 +60,8 @@ def find_files(directory, target):
     """
     found_files = []
     if not os.path.exists(directory):
-        print(f"Путь '{directory}' не существует")
+        print(ru.PATH_NOT_EXIST_1, directory, ru.PATH_NOT_EXIST_2)
         return found_files
-
     files_and_dirs = os.listdir(directory)
 
     for item in files_and_dirs:
@@ -180,7 +179,7 @@ def main():
         run_command(command)
         print()
         if command == QUIT:
-            print('Работа программы завершена.')
+            print(ru.PROGRAM_COMPLETED)
             break
 
 
