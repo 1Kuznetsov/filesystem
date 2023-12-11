@@ -1,4 +1,5 @@
 # Kuznetsov Igor - 100,
+# Yadreeva Maria - 75
 import os
 import ru_local as ru
 
